@@ -7,7 +7,7 @@ heuristic = 1 - Use Manhattan Distance
 heuristic = 2 - Use Chebyshev Distance
 
 Equation for Chebyshev distance heuristic:
-sqrt((x2-x1)^2 + (y2-y1)^2)
+|y2-y1|+|x2-x1| - 2 * min(|y2-y1|,|x2-x1|)
 
 Motivation for selecting heuristic:
 Manhattan distance only uses N,E,W,S movements, however the agent in this problem can move N,E,W,S,NE,NW,SE,SW. Therefore Chebyshev distance may be more appropriate because it also take diagonal steps into consideration.
