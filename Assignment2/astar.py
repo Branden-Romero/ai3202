@@ -52,7 +52,7 @@ def heuristic1(p1, p2):
 def heuristic2(p1, p2):
 	x1,y1 = p1
 	x2,y2 = p2
-	return ((y2-y1)**2 + (x2-x1)**2)**.5
+	return abs(y2-y1)+abs(x2-x1) - 2 * min(abs(y2-y1),abs(x2-x1))
 
 def inList(list1,list2,node):
 	for item in list1:
@@ -101,9 +101,7 @@ def main(argv):
 	global graph 
 	graph = d
 	start = Node((0,len(d)-1),None)
-	heuristic = argv[2]
-	if heuristic != 1 or heuristic !=2:
-		print("Please enter 1 or 2 for the second command line arguement for heuristic.")
+	heuristic = int(argv[2])
 	node,num_eval = astar(start,(len(d[0])-1,0),heuristic)
 	cost = node.g
 	path = []
