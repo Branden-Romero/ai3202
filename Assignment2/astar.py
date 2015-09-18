@@ -52,7 +52,7 @@ def heuristic1(p1, p2):
 def heuristic2(p1, p2):
 	x1,y1 = p1
 	x2,y2 = p2
-	return abs(y2-y1)+abs(x2-x1) - 2 * min(abs(y2-y1),abs(x2-x1))
+	return 10*abs(y2-y1)+abs(x2-x1) + (14 - 2*10) * min(abs(y2-y1),abs(x2-x1))
 
 def inList(list1,list2,node):
 	for item in list1:
