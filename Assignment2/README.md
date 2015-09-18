@@ -35,11 +35,17 @@ Number of locations evaluated (number of entries in closed)-
 58
 
 (Modified Chebyshev Distance Heuristic, World1)
+
 Cost of path:
+
 130
+
 Locations along the path:
+
 [(0, 7), (1, 7), (2, 7), (3, 6), (3, 5), (4, 4), (5, 3), (6, 3), (7, 2), (7, 1), (8, 0), (9, 0)]
+
 Number of locations evaluated (number of entries in closed):
+
 44
 
 
