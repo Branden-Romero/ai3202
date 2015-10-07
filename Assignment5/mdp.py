@@ -32,8 +32,8 @@ class mdp:
 		return self.reward[state]
 
 	def model(self,state, action):
-		if len(self.actions_list) == 0:
-			return [(0, state)]
+		if not action:
+			return [(0.0, state)]
 		else:
 			f = tuple([sum(x) for x in zip(state,action)])
 			if f in self.states:
@@ -51,7 +51,6 @@ class mdp:
 				a3 = l
 			else:
 				a3 = state
-
 			return [(.8, a1),(.1, a2),(.1, a3)]
 	def actions(self,state):
 		if state == self.end:
@@ -102,13 +101,17 @@ def main(argv):
 	us_opt = []
 	path = []
 	location = m.start
+	print(pi_v)
 	
 	while location != m.end:
 		path.append(location)
 		us_opt.append(U[location])
 		move = pi_v[location]
 		location = (location[0]+move[0],location[1]+move[1])
+	print('Optimal Path:')
 	print(path)
+	print('Utility scores along the optimal path:')
 	print(us_opt)
+
 if __name__ == "__main__":
 	main(sys.argv)
