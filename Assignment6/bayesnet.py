@@ -4,11 +4,87 @@ class Node:
 		self.parents = parents
 		self.value = value
 
-#def conditional(a,b,dict):
-	
-#def joint(a,b,c,dict):
+def conditional(a,b,net):
+	return joint(a,b,'x',net)/marginal(b,net)
 
+def joint(a,b,c,net):	
+	if b.isupper() == True and c.isupper() == True:
+		return marginal(a,net)
+
+	if net[a.upper()].parents == None:
+		return net[a.upper()].value
+	else:
+		pjoint = 0
+		p_t = []
+		for parent in net[a.upper()].parents:
+			p_t.append(joint(parent,b,c,net))
+		for key in net[a.upper()].value:
+			if b.isupper() == True and c.isupper() == False:
+				if len(key) == 2:
+					if key[0] == 't':
+						p1 = p_t[0]
+					else:
+						p1 = 0
+					
+					if key[1] == 't':
+						p2 = p_t[1]
+					else:
+						p2 = 1 - p_t[1]
+					
+					pjoint += net[a.upper()].value[key] * p1 * p2
+
+				else:
+					if key == 't':
+						p = p_t[0]
+					else:
+						p = 0
+					pjoint += net[a.upper()].value[key] * p
+			
+			elif b.isupper() == True and c.isupper() == True:
+				if len(key) == 2:
+					if key[0] == 't':
+						p1 = p_t[0]
+					else:
+						p1 = 0
+					
+					if key[1] == 't':
+						p2 = p_t[1]
+					else:
+						p2 = 0
+					
+					pjoint += net[a].value[key] * p1 * p2
+
+				else:
+					if key == 't':
+						p = p_t[0]
+					else:
+						p = 0
+					pjoint += net[a].value[key] * p
+			
+			elif b.isupper() == False and c.isupper() == True:
+				if len(key) == 2:
+					if key[0] == 't':
+						p1 = p_t[0]
+					else:
+						p1 = 1 - p_t[0]
+					
+					if key[1] == 't':
+						p2 = p_t[1]
+					else:
+						p2 = 0
+					
+					pjoint += net[a.upper()].value[key] * p1 * p2
+
+				else:
+					if key == 't':
+						p = p_t[0]
+					else:
+						p = 0
+					pjoint += net[a.upper()].value[key] * p
+	return pjoint
+	
 def marginal(a,net):
+	a = a.upper()
 	if net[a].parents == None:
 		return net[a].value
 	else:
@@ -77,8 +153,14 @@ def main():
 	calculation = 0.0
 	if command == '-m' and len(args) == 1:
 		calculation = marginal(args,bayesNet)
-	else:
+	elif command == 'm' and len(args) != 1:
 		calculation = 1 - marginal(args[1:],bayesNet)
+
+	if command == "-j":
+		calculation = joint(args[0],args[1],args[2],bayesNet)
+
+	if command == "-g":
+		calculation = conditional(args[0],args[1],bayesNet)
 
 	print (calculation)
 
