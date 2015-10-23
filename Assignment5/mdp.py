@@ -6,7 +6,6 @@ class mdp:
 		self.start = (0,len(graph)-1)
 		self.end =  (len(graph[0])-1,0)
 		self.actions_list = directions
-		#graph.reverse()
 		self.graph = graph
 		self.gamma = .9
 		self.states = set()
@@ -27,9 +26,6 @@ class mdp:
 					self.states.add((i,j))
 		self.reward[self.end[0],self.end[1]] = 50
 				
-
-	def reward(self, state):
-		return self.reward[state]
 
 	def model(self,state, action):
 		if not action:
@@ -53,10 +49,13 @@ class mdp:
 				a3 = state
 			return [(.8, a1),(.1, a2),(.1, a3)]
 	def actions(self,state):
+		legal_actions = []
 		if state == self.end:
 			return []
-		else:
-			return self.actions_list
+		for action in self.actions_list:
+			if (state[0]+action[0],state[1]+action[1]) in self.states:
+				legal_actions.append(action)
+		return legal_actions
 
 
 def value_iteration(mdp, epsilon):
@@ -78,13 +77,13 @@ def pi_mdp(mdp, U):
 		eu_max = sum([p*U[state_p] for (p,state_p) in mdp.model(state,ind_max)]) 
 		for act in acts:
 			eu = sum([p*U[state_p] for (p,state_p) in mdp.model(state,act)])
-			if eu > eu_max:
+			if eu > eu_max and ((act[0]+state[0],act[1]+state[1]) in mdp.states):
 				ind_max = act
 				en_max = eu
 		pi_v[state] = ind_max
 
 	return pi_v
-
+	
 def main(argv):
 	with open(argv[1], 'r') as f:
 		r = csv.reader(f,delimiter=' ')
@@ -101,9 +100,9 @@ def main(argv):
 	us_opt = []
 	path = []
 	location = m.start
-	print(pi_v)
 	
 	while location != m.end:
+		#print(location)
 		path.append(location)
 		us_opt.append(U[location])
 		move = pi_v[location]
